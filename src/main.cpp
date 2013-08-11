@@ -2,8 +2,12 @@
 
 #include "Systems/OpenGLSystem.h"
 #include "win32.h"
+#include "Resource Loaders/PNG.h"
 
 int main(int argCount, char **argValues) {
+	PNGLoader pload;
+	pload.Load("test.png");
+
 	OpenGLSystem glsys;
 	win32 win;
 	const int* version = glsys.Start(win.CreateWin32Window());
