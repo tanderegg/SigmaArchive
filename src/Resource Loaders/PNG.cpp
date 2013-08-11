@@ -30,9 +30,6 @@ bool PNGLoader::Load(std::string fname) {
 		return false;
 	}
 
-	// Moved the file pointer to after the signature.
-	//file.seekg(8);
-
 	// Loop through and read each chunk.
 	while (!file.eof()) {
 		this->chunks.push_back(ReadChunk(file));
@@ -43,6 +40,7 @@ bool PNGLoader::Load(std::string fname) {
 }
 
 bool PNGLoader::CheckSignature(std::ifstream& file){
+	file.seekg(0);
 	// Read in the signature which is 8 bytes long
 	char sig[8];
 	file.read(sig, 8);
