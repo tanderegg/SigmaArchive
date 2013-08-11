@@ -8,11 +8,11 @@ using std::endl;
 chunk::chunk() : size(0), data(nullptr) { }
 
 chunk::chunk(const chunk &other) {
-	this->data = other.data;
 	this->size = other.size;
+	this->data = new unsigned char[this->.size];
+	memcpy(this->data, other.data, this->.size);
 	memcpy(this->type, other.type, 4);
 	memcpy(this->CRC, other.CRC, 4);
-	const_cast<chunk&>(other).data = nullptr;
 }
 
 chunk::~chunk() {
