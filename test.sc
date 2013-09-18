@@ -25,8 +25,8 @@
 @mars
 #6
 &GLCubeSphere
->scale=3389500.0f
->x=4000000.0f
+>scale=1000.0f
+>x=4000.0f
 >y=0.0f
 >z=0.0f
 >texture_name=marss
