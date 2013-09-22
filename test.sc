@@ -37,6 +37,7 @@
 @ship
 #7
 &GLMesh
+>scale=0.1f
 >x=30.0f
 >meshFile=trillek_dev_ship_2_clonk2u.objs
 >cullface=nones
