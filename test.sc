@@ -38,15 +38,13 @@
 #7
 &GLMesh
 >x=30.0f
->meshFile=trillek_dev_clonk2u_tri.objs
+>meshFile=trillek_dev_ship_2_clonk2u.objs
+>cullface=nones
 
-@space
+@stars
 #8
 &GLCubeSphere
 >scale=1000.0f
->x=0.0f
->y=0.0f
->z=0.0f
 >texture_name=starss
 >subdivision_levels=3i
 >shader=skyboxs
