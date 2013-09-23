@@ -37,9 +37,9 @@
 @ship
 #7
 &GLMesh
->scale=0.1f
->x=30.0f
->meshFile=trillek_dev_ship_2_clonk2u.objs
+>scale=1.0f
+>x=40.0f
+>meshFile=trillek_dev_ship_2_clonk2u_window.objs
 >cullface=nones
 
 @stars
@@ -51,3 +51,10 @@
 >shader=skyboxs
 >cullface=fronts
 >fix_to_camera=1b
+
+@ship2
+#9
+&GLMesh
+>scale=10.0f
+>x=-40.0f
+>meshFile=ship3.objs
