@@ -39,7 +39,7 @@
 &GLMesh
 >scale=1.0f
 >x=40.0f
->meshFile=trillek_dev_ship_2_clonk2u_window.objs
+>meshFile=../../../assets/trillek_dev_ship_2_clonk2u_window.objs
 >cullface=nones
 
 @stars
@@ -57,4 +57,4 @@
 &GLMesh
 >scale=10.0f
 >x=-40.0f
->meshFile=ship3.objs
+>meshFile=../../../assets/ship3.objs
