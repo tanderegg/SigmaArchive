@@ -21,3 +21,14 @@
 >y=0.0f
 >z=2000.0f
 >scale=500.0f
+
+@mars
+#6
+&GLCubeSphere
+>x=600.0f
+>y=0.0f
+>z=400.0f
+>scale=300.0f
+>texture=assets/marss
+>shader=shaders/cubesphere
+>subdivision_levels=5i
