@@ -1,3 +1,13 @@
+@player
+#1
+&ViewMover
+
+&GLView
+>x=0.0f
+>y=1.0f
+>z=2.0f
+>ry=180.0f
+
 @planet1
 #3
 &GLIcoSphere
