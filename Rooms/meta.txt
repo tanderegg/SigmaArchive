@@ -1,0 +1,20 @@
+room1
+S
+room2
+N W E
+room3
+S E
+room4 hallwayStraight
+W E
+room5 hallwayCorner
+S W
+room6 hallwayT
+S W E
+room7 hallway4way
+N S W E
+room8 deadends
+N S W E
+room9 airlocks
+W E
+hanger 2x2room baydoor-E center-NE
+W W
