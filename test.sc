@@ -2,7 +2,7 @@
 #1
 &ViewMover
 
-&GLView
+&GLFPSView
 >x=0.0f
 >y=1.0f
 >z=2.0f
@@ -11,28 +11,44 @@
 @planet1
 #3
 &GLIcoSphere
->x=-500.0f
+>x=-350.0f
 >y=0.0f
->z=300.0f
->scale=100.0f
+>z=10.0f
+>scale=20.0f
+
+&PhysicsMover
+>ry=1.5f
 
 @planet2
-#2
+#4
 &GLIcoSphere
-#1
->x=-500.0f
->y=0.0f
->z=8000.0f
->scale=1000.0f
+>x=-700.0f
+>y=50.0f
+>z=180.0f
+>scale=75.0f
+
+&PhysicsMover
+>ry=0.75f
 
 @planet3
-#3
+#5
 &GLIcoSphere
-#1
 >x=-500.0f
->y=0.0f
->z=2000.0f
->scale=500.0f
+>y=25.0f
+>z=-75.0f
+>scale=50.0f
+
+&PhysicsMover
+>ry=2.5f
+
+//@stars
+//#6
+//&GLCubeSphere
+//>shader=shaders/cubespheres
+//>cullface=nones
+//>subdivision_levels=1i
+//>texture=starss
+//>fix_to_camera=1b
 
 @center
 #10
