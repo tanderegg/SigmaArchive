@@ -41,14 +41,14 @@
 &PhysicsMover
 >ry=2.5f
 
-//@stars
-//#6
-//&GLCubeSphere
-//>shader=shaders/cubespheres
-//>cullface=nones
-//>subdivision_levels=1i
-//>texture=starss
-//>fix_to_camera=1b
+@stars
+#6
+&GLCubeSphere
+>texture=starss
+>shader=shaders/skyboxs
+>subdivision_levels=1i
+>fix_to_camera=1b
+>cullface=fronts
 
 @center
 #10
@@ -427,3 +427,5 @@
 >meshFile=shipobj/ship.objs
 >subdivisions=4i
 >halfsize=50.0f
+
+
