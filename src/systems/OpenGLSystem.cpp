@@ -6,6 +6,7 @@
 #include "../components/GLIcoSphere.h"
 #include "../components/GLCubeSphere.h"
 #include "../components/GLMesh.h"
+#include "../components/PointLight.h"
 
 namespace Sigma{
     OpenGLSystem::OpenGLSystem() : windowWidth(800), windowHeight(600), deltaAccumulator(0.0),
@@ -22,6 +23,7 @@ namespace Sigma{
 		retval["GLMesh"] = std::bind(&OpenGLSystem::createGLMesh,this,_1,_2);
 		retval["GLFPSView"] = std::bind(&OpenGLSystem::createGLView,this,_1,_2, "GLFPSView");
 		retval["GLSixDOFView"] = std::bind(&OpenGLSystem::createGLView,this,_1,_2, "GLSixDOFView");
+		retval["PointLight"] = std::bind(&OpenGLSystem::createPointLight,this,_1,_2);
 
         return retval;
     }
@@ -127,6 +129,8 @@ namespace Sigma{
 					componentID = p->Get<int>();
 				} else if (p->GetName() == "shader"){
 					shader_name = p->Get<std::string>();
+				} else if (p->GetName() == "lightEnabled") {
+					sphere->SetLightingEnabled(p->Get<bool>());
 				}
 			}
 			sphere->Transform()->Scale(scale,scale,scale);
@@ -137,65 +141,67 @@ namespace Sigma{
 			this->addComponent(entityID,sphere);
 	}
 
-		void OpenGLSystem::createGLCubeSphere(const unsigned int entityID, std::vector<Property> &properties) {
-			Sigma::GLCubeSphere* sphere = new Sigma::GLCubeSphere(entityID);
+	void OpenGLSystem::createGLCubeSphere(const unsigned int entityID, std::vector<Property> &properties) {
+		Sigma::GLCubeSphere* sphere = new Sigma::GLCubeSphere(entityID);
 
-			std::string texture_name = "";
-			std::string shader_name = "shaders/cubesphere";
-			std::string cull_face = "back";
-			int subdivision_levels = 1;
-			float rotation_speed = 0.0f;
-			bool fix_to_camera = false;
+		std::string texture_name = "";
+		std::string shader_name = "shaders/cubesphere";
+		std::string cull_face = "back";
+		int subdivision_levels = 1;
+		float rotation_speed = 0.0f;
+		bool fix_to_camera = false;
 
-			float scale = 1.0f;
-			float x = 0.0f;
-			float y = 0.0f;
-			float z = 0.0f;
-			float rx = 0.0f;
-			float ry = 0.0f;
-			float rz = 0.0f;
-			int componentID = 0;
-			for (auto propitr = properties.begin(); propitr != properties.end(); ++propitr) {
-				Property*  p = &(*propitr);
-				if (p->GetName() == "scale") {
-					scale = p->Get<float>();
-				} else if (p->GetName() == "x") {
-					x = p->Get<float>();
-				} else if (p->GetName() == "y") {
-					y = p->Get<float>();
-				} else if (p->GetName() == "z") {
-					z = p->Get<float>();
-				} else if (p->GetName() == "rx") {
-					rx = p->Get<float>();
-				} else if (p->GetName() == "ry") {
-					ry = p->Get<float>();
-				} else if (p->GetName() == "rz") {
-					rz = p->Get<float>();
-				} else if (p->GetName() == "subdivision_levels") {
-					subdivision_levels = p->Get<int>();
-				} else if (p->GetName() == "texture") {
-					texture_name = p->Get<std::string>();
-				} else if (p->GetName() == "shader") {
-					shader_name = p->Get<std::string>();
-				} else if (p->GetName() == "id") {
-					componentID = p->Get<int>();
-				} else if (p->GetName() == "cullface") {
-					cull_face = p->Get<std::string>();
-				} else if (p->GetName() == "fix_to_camera") {
-					fix_to_camera = p->Get<bool>();
-				}
+		float scale = 1.0f;
+		float x = 0.0f;
+		float y = 0.0f;
+		float z = 0.0f;
+		float rx = 0.0f;
+		float ry = 0.0f;
+		float rz = 0.0f;
+		int componentID = 0;
+		for (auto propitr = properties.begin(); propitr != properties.end(); ++propitr) {
+			Property*  p = &(*propitr);
+			if (p->GetName() == "scale") {
+				scale = p->Get<float>();
+			} else if (p->GetName() == "x") {
+				x = p->Get<float>();
+			} else if (p->GetName() == "y") {
+				y = p->Get<float>();
+			} else if (p->GetName() == "z") {
+				z = p->Get<float>();
+			} else if (p->GetName() == "rx") {
+				rx = p->Get<float>();
+			} else if (p->GetName() == "ry") {
+				ry = p->Get<float>();
+			} else if (p->GetName() == "rz") {
+				rz = p->Get<float>();
+			} else if (p->GetName() == "subdivision_levels") {
+				subdivision_levels = p->Get<int>();
+			} else if (p->GetName() == "texture") {
+				texture_name = p->Get<std::string>();
+			} else if (p->GetName() == "shader") {
+				shader_name = p->Get<std::string>();
+			} else if (p->GetName() == "id") {
+				componentID = p->Get<int>();
+			} else if (p->GetName() == "cullface") {
+				cull_face = p->Get<std::string>();
+			} else if (p->GetName() == "fix_to_camera") {
+				fix_to_camera = p->Get<bool>();
+			} else if (p->GetName() == "lightEnabled") {
+				sphere->SetLightingEnabled(p->Get<bool>());
 			}
+		}
 
-			sphere->SetSubdivisions(subdivision_levels);
-			sphere->SetFixToCamera(fix_to_camera);
-			sphere->SetCullFace(cull_face);
-			sphere->Transform()->Scale(scale,scale,scale);
-			sphere->Transform()->Rotate(rx,ry,rz);
-			sphere->Transform()->Translate(x,y,z);
-			sphere->LoadShader(shader_name);
-			sphere->LoadTexture(texture_name);
-			sphere->InitializeBuffers();
-			this->addComponent(entityID,sphere);
+		sphere->SetSubdivisions(subdivision_levels);
+		sphere->SetFixToCamera(fix_to_camera);
+		sphere->SetCullFace(cull_face);
+		sphere->Transform()->Scale(scale,scale,scale);
+		sphere->Transform()->Rotate(rx,ry,rz);
+		sphere->Transform()->Translate(x,y,z);
+		sphere->LoadShader(shader_name);
+		sphere->LoadTexture(texture_name);
+		sphere->InitializeBuffers();
+		this->addComponent(entityID,sphere);
 	}
 
 	void OpenGLSystem::createGLMesh(const unsigned int entityID, std::vector<Property> &properties) {
@@ -244,6 +250,8 @@ namespace Sigma{
 				componentID = p->Get<int>();
 			} else if (p->GetName() == "cullface") {
 				cull_face = p->Get<std::string>();
+			} else if (p->GetName() == "lightEnabled") {
+				mesh->SetLightingEnabled(p->Get<bool>());
 			}
 		}
 
@@ -256,6 +264,41 @@ namespace Sigma{
         mesh->InitializeBuffers();
         this->addComponent(entityID,mesh);
     }
+
+	void OpenGLSystem::createPointLight(const unsigned int entityID, std::vector<Property> &properties) {
+		Sigma::PointLight *light = new Sigma::PointLight(entityID);
+
+		for (auto propitr = properties.begin(); propitr != properties.end(); ++propitr) {
+			Property*  p = &*propitr;
+			if (p->GetName() == "x") {
+				light->position.x = p->Get<float>();
+			} else if (p->GetName() == "y") {
+				light->position.y = p->Get<float>();
+			} else if (p->GetName() == "z") {
+				light->position.z = p->Get<float>();
+			} else if (p->GetName() == "intensity") {
+				light->intensity = p->Get<float>();
+			} else if (p->GetName() == "cr") {
+				light->color.r = p->Get<float>();
+			} else if (p->GetName() == "cg") {
+				light->color.g = p->Get<float>();
+			} else if (p->GetName() == "cb") {
+				light->color.b = p->Get<float>();
+			} else if (p->GetName() == "ca") {
+				light->color.a = p->Get<float>();
+			} else if (p->GetName() == "catten") {
+				light->cAttenuation = p->Get<float>();
+			} else if (p->GetName() == "latten") {
+				light->lAttenuation = p->Get<float>();
+			} else if (p->GetName() == "qatten") {
+				light->qAttenuation = p->Get<float>();
+			} else if (p->GetName() == "radius") {
+				light->radius = p->Get<float>();
+			}
+		}
+
+		this->addComponent(entityID, light);
+	}
 
     bool OpenGLSystem::Update(const double delta) {
         this->deltaAccumulator += delta;
@@ -270,12 +313,73 @@ namespace Sigma{
 
 			glm::mat4 viewMatrix = this->view->GetViewMatrix();
 
-            // Loop through and draw each component.
-            for (auto eitr = this->_Components.begin(); eitr != this->_Components.end(); ++eitr) {
-                for (auto citr = eitr->second.begin(); citr != eitr->second.end(); ++citr) {
-                    citr->second->Render(&viewMatrix[0][0], &this->ProjectionMatrix[0][0]);
-                }
-            }
+			// Loop through each light, rendering all components
+			// TODO: Cull components based on light
+			// TODO: Implement scissors test
+			// Potentially move to deferred shading depending on
+			// visual style needs
+
+			// TODO: Render a ambient pass first, then turn on additive blending for multiple lights
+			
+			// Ambient Pass
+			// Loop through and draw each component.
+			for (auto eitr = this->_Components.begin(); eitr != this->_Components.end(); ++eitr) {
+				for (auto citr = eitr->second.begin(); citr != eitr->second.end(); ++citr) {
+					IGLComponent *glComp = dynamic_cast<IGLComponent *>(citr->second.get());
+
+					if(glComp) {
+						glComp->GetShader()->Use();
+						// For now, turn on ambient intensity and turn off lighting
+						glUniform1f(glGetUniformLocation(glComp->GetShader()->GetProgram(), "ambientLightIntensity"), 0.15f);
+						glUniform1f(glGetUniformLocation(glComp->GetShader()->GetProgram(), "lightIntensity"), 0.0f);
+						glComp->Render(&viewMatrix[0][0], &this->ProjectionMatrix[0][0]);
+					}
+				}
+			}
+
+			// Light passes
+			for(auto eitr = this->_Components.begin(); eitr != this->_Components.end(); ++eitr) {
+				for (auto citr = eitr->second.begin(); citr != eitr->second.end(); ++citr) {
+					// Check if this component is a light
+					PointLight *light = dynamic_cast<PointLight*>(citr->second.get());
+
+					if(light) {
+						// Modify depth test to allow for overlaying
+						// lights
+						glDepthFunc(GL_LEQUAL);
+
+						// Make sure additive blending is enabled
+						glEnable(GL_BLEND);
+						glBlendFunc(GL_ONE, GL_ONE);
+
+						// Loop through and draw each component.
+						for (auto child_eitr = this->_Components.begin(); child_eitr != this->_Components.end(); ++child_eitr) {
+							for (auto child_citr = child_eitr->second.begin(); child_citr != child_eitr->second.end(); ++child_citr) {
+								IGLComponent *glComp = dynamic_cast<IGLComponent *>(child_citr->second.get());
+
+								if(glComp && glComp->IsLightingEnabled()) {
+									glComp->GetShader()->Use();
+
+									// Turn off ambient light for additive blending
+									glUniform1f(glGetUniformLocation(glComp->GetShader()->GetProgram(), "ambientLightIntensity"), 0.0f);
+
+									// Activate the current point light for this shader
+									light->Activate(glComp->GetShader().get());
+
+									// Render
+									glComp->Render(&viewMatrix[0][0], &this->ProjectionMatrix[0][0]);
+								}
+							}
+						}
+
+						// Remove blending
+						glDisable(GL_BLEND);
+
+						// Re-enabled depth test
+						glDepthFunc(GL_LESS);
+					}
+				}
+			}
 
             this->deltaAccumulator = 0.0;
             return true;
@@ -289,11 +393,14 @@ namespace Sigma{
 		// for now, just returns the first component's transform
 		// bigger question: should entities be able to have multiple GLComponents?
 		for(auto compItr = entity->begin(); compItr != entity->end(); compItr++) {
-			GLTransform *transform = ((*compItr).second)->Transform();
-			return transform;
+			IGLComponent *glComp = dynamic_cast<IGLComponent *>((*compItr).second.get());
+			if(glComp) {
+				GLTransform *transform = glComp->Transform();
+				return transform;
+			}
 		}
 
-		// no components
+		// no gl components
 		return 0;
 	}
 

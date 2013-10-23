@@ -19,7 +19,7 @@ struct IGLView;
 namespace Sigma{
 
     class OpenGLSystem
-        : public Sigma::IFactory, public ISystem<Sigma::IGLComponent> {
+        : public Sigma::IFactory, public ISystem<IComponent> {
     public:
 
         OpenGLSystem();
@@ -88,7 +88,8 @@ namespace Sigma{
         void createGLIcoSphere(const unsigned int entityID, std::vector<Property> &properties) ;
         void createGLCubeSphere(const unsigned int entityID, std::vector<Property> &properties) ;
         void createGLMesh(const unsigned int entityID, std::vector<Property> &properties) ;
-		
+		void createPointLight(const unsigned int entityID, std::vector<Property> &properties);
+
 		// Views are not technically components, but perhaps they should be
 		void createGLView(const unsigned int entityID, std::vector<Property> &properties, std::string mode) ;
 
